@@ -1,0 +1,221 @@
+/* =========================
+   DESKTOP (mặc định)
+   KHÔNG cần viết ở đây
+========================= */
+
+
+/* ===== TABLET (≤1024px) ===== */
+@media (max-width: 1024px) {
+
+  /* GRID */
+  
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .category-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .product-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-top {
+    grid-template-columns: repeat(2, 1fr);
+    text-align: center;
+    max-width: 1200px;
+  }
+
+  .nav {
+    display: none;
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  /* FONT */
+  .section-title {
+    font-size: 36px;
+  }
+
+  .product-card h3 {
+    font-size: 36px; /* ❗ FIX: không dùng clamp nữa */
+    line-height: 1.4;
+  }
+
+  .new-price {
+    font-size: 48px; /* ❗ FIX: không dùng clamp nữa */
+    line-height: 1.4;
+  }
+
+  .old-price {
+    font-size: 24px; /* ❗ FIX: không dùng clamp nữa */
+    line-height: 1.4;
+  }
+  .category-item span {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+}
+  .product-card button {
+    font-size: 36px;
+    padding: 8px;
+  }
+  .discount-badge {
+    position: absolute;
+    font-size: 36px;
+    top: 8px;
+    left: 8px;
+    z-index: 2;
+    }
+
+   .header-top {
+    display: flex;
+    flex-wrap: wrap; /* ⭐ cho phép xuống dòng */
+    align-items: center;
+   }
+
+  .logo img{
+    height: 150px;
+    order: 1;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .search-box {
+    height: 90px;
+    font-size: 36px;          /* ⭐ cao lên */
+    order: 3;
+    width: 100%;
+    margin-top: 10px;
+  }
+  .search-box text{
+    font-size: 36px;
+    padding: 0 30px;
+  }
+
+  .header-actions {
+    font-size: 34px;
+    order: 2;
+    display: flex;
+    justify-content: flex-end; /* đẩy qua phải */
+  }
+    .search-box button {
+    height: 90px;
+    width: 100px;
+    font-size: 24px;
+    border-radius: 0 15px 15px 0;
+    background: #1b4998;
+  }
+}
+
+
+/* ===== MOBILE (≤768px) ===== */
+@media (max-width: 768px) {
+
+  /* GRID */
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+.category-item span {
+    font-size: 16px; /* ❗ FIX TO LÊN */
+    line-height: 1.4;
+    color: #333;
+}
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-top {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* UI */
+  .product-card {
+    padding: 10px;
+  }
+
+  .thumbnail-list img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .slide-content {
+    left: 16px;
+    font-size: 14px;
+  }
+
+  /* FONT (QUAN TRỌNG) */
+  body {
+    font-size: 15px;
+  }
+
+  .section-title {
+    font-size: 18px;
+  }
+
+  .product-card h3 {
+    font-size: 16px; /* ❗ FIX TO LÊN */
+    line-height: 1.4;
+  }
+
+  .new-price {
+    font-size: 18px;
+  }
+
+  .old-price {
+    font-size: 13px;
+  }
+
+  .product-card button {
+    font-size: 28px;
+    padding: 8px;
+  }
+}
+
+
+/* ===== SMALL MOBILE (≤480px) ===== */
+@media (max-width: 480px) {
+
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-top {
+    grid-template-columns: 1fr;
+  }
+
+  /* FONT */
+  body {
+    font-size: 14px;
+  }
+
+  .section-title {
+    font-size: 16px;
+  }
+
+  .product-card h3 {
+    font-size: 15px; /* ❗ KHÔNG cho xuống 12 nữa */
+    line-height: 1.4;
+  }
+
+  .new-price {
+    font-size: 16px;
+  }
+}
+/* ẨN TRÊN PC */
+@media (min-width: 1024px) {
+  .fab-container {
+    display: none;
+  }
+}
+
