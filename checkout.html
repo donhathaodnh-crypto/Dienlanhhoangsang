@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Thanh toán</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#f5f5f5;
+}
+
+.checkout-container{
+  max-width:1200px;
+  margin:40px auto;
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:30px;
+  padding:0 15px;
+}
+
+.checkout-box{
+  background:#fff;
+  padding:25px;
+  border-radius:10px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.05);
+}
+
+.checkout-box h2{
+  margin-bottom:20px;
+}
+
+.form-group{
+  margin-bottom:15px;
+}
+
+.form-group input,
+.form-group textarea{
+  width:100%;
+  padding:12px;
+  border-radius:6px;
+  border:1px solid #ddd;
+  font-size:14px;
+}
+
+.order-product{
+  display:flex;
+  gap:15px;
+  align-items:center;
+}
+
+.order-product img{
+  width:80px;
+  border-radius:6px;
+}
+
+.summary-line{
+  display:flex;
+  justify-content:space-between;
+  margin:10px 0;
+}
+
+.total-price{
+  font-size:20px;
+  font-weight:bold;
+  color:#e60023;
+}
+
+.place-order-btn{
+  width:100%;
+  padding:15px;
+  background:#ff4d4f;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:20px;
+  transition:0.2s;
+}
+
+.place-order-btn:hover{
+  background:#e60023;
+}
+
+@media(max-width:768px){
+  .checkout-container{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="checkout-container">
+
+<!-- LEFT -->
+<div class="checkout-box">
+  <h2>Thông tin nhận hàng</h2>
+
+  <div class="form-group">
+    <input type="text" id="name" placeholder="Họ và tên">
+  </div>
+
+  <div class="form-group">
+    <input type="text" id="phone" placeholder="Số điện thoại">
+  </div>
+
+  <div class="form-group">
+    <input type="text" id="address" placeholder="Địa chỉ giao hàng">
+  </div>
+
+  <div class="form-group">
+    <textarea rows="3" placeholder="Ghi chú"></textarea>
+  </div>
+
+  <h2>Phương thức thanh toán</h2>
+  <div class="form-group">
+    <label><input type="radio" name="payment" checked> Thanh toán khi nhận hàng (COD)</label>
+  </div>
+
+  <div class="form-group">
+    <label><input type="radio" name="payment"> Chuyển khoản ngân hàng</label>
+  </div>
+
+</div>
+
+<!-- RIGHT -->
+<div class="checkout-box">
+  <h2>Đơn hàng của bạn</h2>
+
+  <div class="order-product">
+    <img src="assets/images/p1.jpg">
+    <div>
+      <p>Tivi Samsung 55"</p>
+      <strong id="price">12.990.000đ</strong>
+    </div>
+  </div>
+
+  <hr style="margin:20px 0">
+
+  <div class="summary-line">
+    <span>Tạm tính</span>
+    <span id="subtotal">12.990.000đ</span>
+  </div>
+
+  <div class="summary-line">
+    <span>Phí vận chuyển</span>
+    <span>0đ</span>
+  </div>
+
+  <div class="summary-line total-price">
+    <span>Tổng cộng</span>
+    <span id="total">12.990.000đ</span>
+  </div>
+
+  <button class="place-order-btn">ĐẶT HÀNG</button>
+
+</div>
+
+</div>
+
+<script>
+document.querySelector(".place-order-btn").addEventListener("click", function(){
+
+  const name = document.getElementById("name").value;
+  const phone = document.getElementById("phone").value;
+  const address = document.getElementById("address").value;
+  const total = document.getElementById("total").innerText;
+
+  if(name === "" || phone === "" || address === ""){
+    alert("Vui lòng điền đầy đủ thông tin!");
+    return;
+  }
+
+  fetch("https://script.google.com/macros/s/AKfycbxwTFuE46oEHntt_x3CvdJ5WgGaBWtQ31B69_XnGm96EoSKLKK8zHAO0cvJRZFHLODOpw/exec", {
+  method: "POST",
+  mode: "no-cors",   // QUAN TRỌNG
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    name: name,
+    phone: phone,
+    address: address,
+    total: total
+  })
+})
+.then(response => response.text()) // đổi sang text trước
+.then(data => {
+  console.log("Server trả về:", data);
+  alert("🎉 Đặt hàng thành công!");
+  window.location.href = "index.html";
+})
+.catch(error => {
+  console.error(error);
+  alert("Lỗi gửi đơn!");
+});
+
+});
+</script>
+
+</body>
+</html>

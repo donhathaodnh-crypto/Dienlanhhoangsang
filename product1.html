@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Chi tiết sản phẩm</title>
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <link rel="stylesheet" href="assets/css/home.css">
+
+  <style>
+    body { font-family: Arial; }
+#toggleBtn {
+  font-size: 15px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  background: #f5f5f5;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#toggleBtn:hover {
+  background: #004aa3;
+  color: #fff;
+  border-color: #004aa3;
+}
+    .spec-content {
+      font-family: 'Roboto', sans-serif;
+      font-size: 18px;
+      max-height: 120px;
+      overflow: hidden;
+      position: relative;
+      transition: 0.3s;
+    }
+
+    .spec-content.open {
+      max-height: 1000px;
+    }
+
+    .spec-content::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 60px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0), #fff);
+    }
+
+    .spec-content.open::after {
+      display: none;
+    }
+
+    .section-title {
+      margin-top: 40px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    /* GRID */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+
+/* CARD */
+.product-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 10px;
+  transition: 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+
+/* HOVER */
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  border-color: #ddd;
+}
+
+/* LINK */
+.product-card a {
+  text-decoration: none;
+  color: #333;
+  display: block;
+}
+
+/* IMAGE */
+.product-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: contain;
+  margin-bottom: 10px;
+  transition: 0.3s;
+}
+
+.product-card:hover img {
+  transform: scale(1.05);
+}
+
+/* NAME */
+.product-card h3 {
+  font-size: 14px;
+  height: 38px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+/* PRICE */
+.product-card p {
+  color: red;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* BADGE SALE (OPTION) */
+.product-card::before {
+  content: "-30%";
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: red;
+  color: #fff;
+  font-size: 12px;
+  padding: 3px 6px;
+  border-radius: 4px;
+}
+
+/* TITLE */
+.section-title {
+  margin-top: 40px;
+  font-size: 22px;
+  font-weight: bold;
+  position: relative;
+  padding-left: 10px;
+}
+
+/* LINE ĐỎ */
+.section-title::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 4px;
+  width: 4px;
+  height: 22px;
+  border-radius: 2px;
+}
+.vat-note {
+  font-size: 13px;
+  color: #666;
+  margin-top: 5px;
+}
+  </style>
+</head>
+
+<body>
+
+<header class="header">
+  <div class="container header-top">
+    <div class="logo">
+  <a href="index.html">
+    <img src="assets/Images/logo HS-54-54.png" alt="">
+  </a>
+</div>
+
+    <div class="search-box">
+      <input type="text" placeholder="Tìm kiếm..." />
+      <button>Tìm</button>
+    </div>
+
+    <div class="header-actions">
+      <span>📞 0366.048.028</span>
+      <span>🛒 Giỏ hàng</span>
+    </div>
+  </div>
+</header>
+
+<!-- BREADCRUMB -->
+<div class="container">
+  <div class="breadcrumb">
+    <a href="index.html">Trang chủ</a>
+    <span>›</span>
+    <a href="hukan.html" id="breadcrumbCategory"></a>
+    <span>›</span>
+    <span id="breadcrumbName"></span>
+  </div>
+</div>
+
+<!-- PRODUCT -->
+<section class="product-detail">
+  <div class="container">
+  <div class="container product-layout">
+
+    <div class="product-gallery">
+      <button class="main-btn prev">‹</button>
+      <img id="mainImage" class="main-image">
+      <button class="main-btn next">›</button>
+
+    <div class="thumb-wrapper">
+      <button class="thumb-btn left">‹</button>
+      <div class="thumbnail-list" id="thumbnailList"></div>
+      <button class="thumb-btn right">›</button>
+      </div>
+    </div>
+
+    <div class="product-info">
+      <h1 id="productName"></h1>
+
+      <div class="price-box1">
+        <span class="old-price1" id="productOldPrice"></span><br>
+        <span class="new-price1" id="productPrice"></span>
+        <p class="vat-note">(Giá bán chưa bao gồm thuế VAT)</p>
+      </div>
+
+      <div class="quantity-box">
+        <button class="qty-btn minus">−</button>
+        <input type="text" value="1" class="qty-input">
+        <button class="qty-btn plus">+</button>
+      </div>
+
+      <div class="action-buttons">
+        <button class="add-cart-btn">Thêm vào giỏ hàng</button>
+        <button class="buy-now-btn" onclick="window.location.href='checkout.html'">
+          Mua ngay
+        </button>
+      </div>
+            <div class="warehouse">
+        <h3>ĐỊA CHỈ CỬA HÀNG</h3>
+            <p>📍 Đường Bình Giả, phường Tân Thành, TP. Hồ Chí Minh</p>
+            <p>📞 Hotline: 0366.048.028</p>
+          </div>
+    </div>
+  </div>
+<div class="features">
+  <div class="feature-item">
+    <img src="assets/Images/Logo Shoping.png">
+    <h4>MUA HÀNG TRỰC TUYẾN</h4>
+    <p>0366.048.028<br>0339.539.486</p>
+  </div>
+
+  <div class="feature-item">
+    <img src="assets/Images/Logo BaoHanh.png">
+    <h4>BẢO HÀNH TOÀN QUỐC</h4>
+    <p>Bảo hành chính hãng toàn quốc</p>
+  </div>
+
+  <div class="feature-item">
+    <img src="assets/Images/Logo ThanhToan.png">
+    <h4>THANH TOÁN DỄ DÀNG</h4>
+    <p>Kiểm tra hàng trước khi thanh toán</p>
+  </div>
+
+  <div class="feature-item">
+    <img src="assets/Images/Logo GiaoHang.png">
+    <h4>GIAO HÀNG TẬN NƠI</h4>
+    <p>Giao hàng & thu tiền tại nhà</p>
+  </div>
+</div>
+
+</div>
+
+</section>
+
+<!-- RELATED -->
+<section class="related-products">
+          <h2>THÔNG SỐ SẢN PHẨM</h2>
+
+      <div class="short-specs">
+        <div class="spec-content" id="specContent"></div>
+
+        <div class="toggle-wrap">
+          <button id="toggleBtn">Xem thêm ▼</button>
+        </div>
+      </div>
+  <div class="section-header">
+    <h2 class="section-title">SẢN PHẨM LIÊN QUAN</h2>
+    <a href="vattudienlanh.html" class="view-all">Xem tất cả</a>
+  </div>
+    <div class="product-grid" id="relatedList"></div>
+
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+  // ===== DATA =====
+  const products = [
+    {
+      id: 1,
+      name: "Dầu Nhớt Lạnh R134A (500ML)",
+      price: "77.000đ",
+      oldPrice: "107.000đ",
+      categoryName: "VẬT TƯ ĐIỆN LẠNH",
+      images: [
+        "assets/Images/Dau Nhot Lanh.png",
+        "assets/Images/Dau Nhot Lanh 1.jpg"
+      ],
+      desc: `
+        Dầu R134 (thường được gọi là nhớt lạnh R134a) là loại dầu bôi trơn tổng hợp chuyên dụng cho các máy nén (lốc) trong hệ thống điện lạnh sử dụng môi chất lạnh R134a, phổ biến ở điều hòa ô tô, tủ lạnh dân dụng và máy làm mát mini.<br><br>
+ Đặc điểm và Công dụng<br>
+
+- Chức năng chính: Bôi trơn các chi tiết chuyển động trong máy nén để giảm ma sát, chống mài mòn và hỗ trợ giải nhiệt cho hệ thống.
+
+- Tính tương thích: Được thiết kế đặc biệt để hòa tan và hoạt động ổn định với gas R134a. Các loại dầu khoáng thông thường (như dùng cho gas R22) không thể trộn lẫn với R134a và có thể gây hỏng máy nén.
+
+Phân loại phổ biến:
+
+PAG (Polyalkylene Glycol): Thường dùng nhất cho hệ thống điều hòa ô tô (ví dụ: PAG 46, PAG 100).
+
+POE (Polyol Ester): Thường dùng trong các hệ thống lạnh công nghiệp, máy nén trục vít hoặc chiller.<br> <br> 
+
+Các sản phẩm phổ biến trên thị trường:<br> 
+
+- Dầu R134 Can Xanh: Loại phổ thông đóng lon/can 1 lít, chuyên dùng cho tủ lạnh và điều hòa dân dụng.<br> 
+
+- Sunice AC46: Dòng nhớt chất lượng cao tương thích cho cả gas R134a và R1234yf.<br> 
+
+- Hanbell / Trane / Carrier: Các dòng dầu chuyên dụng cho máy nén trục vít và hệ thống chiller công nghiệp.<br> 
+
+- Jincool PAG46: Chuyên dụng cho lốc điều hòa ô tô chạy gas R134a. Chiller Toàn Cầu.<br> <br>
+Lưu ý: Dầu lạnh R134a rất dễ hút ẩm từ không khí. Khi nạp dầu, bạn nên thao tác nhanh và đậy kín nắp ngay sau khi sử dụng để tránh làm hỏng đặc tính bôi trơn của dầu.
+
+
+      `
+    },
+
+    {
+      id: 2,
+      name: "Dầu Nhớt Gấu Trắng EMKARATE Rl68H (1 LÍT)",
+      price: "80.000đ",
+      oldPrice: "112.000đ",
+      categoryName: "VẬT TƯ ĐIỆN LẠNH",
+      images: [
+        "assets/Images/Dau Nhot.png",
+        "assets/Images/Dau Nhot 1.jpg"
+      ],
+      desc: `Dầu nhớt "gấu" lon 1 lít Emkarate RL68H là loại dầu lạnh tổng hợp gốc Polyol Ester (POE) chuyên dụng cho máy nén lạnh và hệ thống điều hòa không khí.<br><br>
+      Thông số cơ bản:<br>
+
+Dưới đây là các thông số kỹ thuật cơ bản của dầu lạnh Emkarate RL68H (thường gọi là dầu gấu) đóng lon 1 lít:<br><br>
+
+- Gốc dầu: Polyol Ester (POE) - Tổng hợp<br>
+
+- Độ nhớt tại 40°C: 66.6 cSt<br>
+
+- Độ nhớt tại 100°C: 9.4 cSt<br>
+
+- Chỉ số độ nhớt (VI): 120<br>
+
+- Điểm chớp cháy: 270°C (rất an toàn, chống cháy nổ tốt)<br>
+
+- Điểm đông đặc: -39°C<br>
+
+- Tỷ trọng tại 20°C: 0.977 g/ml<br>
+
+- Màu sắc: Vàng nhạt, trong suốt<br><br>
+      Đặc điểm kỹ thuật và Công dụng<br>
+
+- Độ nhớt: Đạt tiêu chuẩn ISO VG 68, giúp bôi trơn hiệu quả, giảm ma sát và bảo vệ các bề mặt kim loại (thép, nhôm) trong máy nén.<br>
+
+- Khả năng tương thích: Hoạt động tốt với các loại gas lạnh phổ biến như R134a, R404a, R410a, R507 và cả các hỗn hợp CFC/HCFC như R22.<br>
+
+- Độ bền cao: Có tính ổn định nhiệt và hóa học tuyệt vời, cho phép máy nén hoạt động ổn định trong dải nhiệt độ rộng, từ đó kéo dài tuổi thọ hệ thống.<br><br>
+Lưu ý quan trọng:<br>
+
+- Hút ẩm cực mạnh: Do là gốc POE, dầu này rất dễ ngậm nước từ không khí. Bạn nên đậy kín nắp ngay sau khi sử dụng hoặc nạp vào hệ thống để tránh làm hỏng dầu.<br>
+
+- Ứng dụng: Chuyên dùng cho các hệ thống máy lạnh sử dụng gas đời mới như R134a, R404a, R410a, R507.     <br> 
+      `
+    },
+    {
+      id: 3,
+      name: "Biến Áp Đổi Nguồn WIN 110V 30A",
+      price: "475.000đ",
+      oldPrice: "665.000đ",
+      categoryName: "VẬT TƯ ĐIỆN LẠNH",
+      images: [
+        "assets/Images/BienAp.png",
+        "assets/Images/BienAp1.jpg"
+      ],
+      desc: `Biến áp thương hiệu Win (hoặc các dòng tương đương công suất 30A) là bộ đổi nguồn từ 220V sang 100V - 110V, có công suất thực tế khoảng 3000W (3kVA). Sản phẩm này cực kỳ phổ biến cho các thiết bị nội địa Nhật công suất lớn như máy lạnh (đến 18.000 BTU), bếp từ, máy giặt, hoặc nồi cơm điện cao tần.<br><br>
+     Thông Số Kỹ Thuật:<br>
+
+- Điện áp đầu vào: 220V – 240V (AC)<br>
+
+- Điện áp đầu ra: 100V – 110V (AC)<br>
+
+- Công suất: Tùy chọn (100W, 500W, 1000W, 2000W…)<br>
+
+- Chất liệu: Vỏ nhựa chống cháy hoặc kim loại cách điện<br><br>
+Đặc điểm kỹ thuật cần lưu ý:<br>
+
+- Công suất: 30A tương đương 3000VA (khoảng 2400W - 2500W thực tế).<br>
+
+- Thiết kế: Vỏ sơn tĩnh điện giúp cách điện an toàn, có lỗ thông hơi hai bên để tản nhiệt tốt khi hoạt động liên tục.<br><br>
+Ứng dụng: <br>
+
+- Thiết bị Nhật Bản: Máy làm đẹp, nồi cơm điện, bàn ủi, máy sấy tóc…<br>
+
+- Thiết bị điện tử: Máy chơi game (PS5, Nintendo Switch), đầu DVD, ampli…<br>
+
+- Đồ gia dụng cao cấp: Máy pha cà phê, máy hút bụi, máy xay sinh tố…<br><br>
+Tại Sao Nên Sử Dụng Bộ Đổi Nguồn 220V Sang 100V, 110V?<br>
+
+✅ Bảo vệ thiết bị: Chuyển đổi điện áp chính xác từ 220V xuống 100V, 110V tránh tình trạng quá tải, chập cháy.<br>
+
+✅ Đa dạng công suất: Phù hợp với nhiều thiết bị như máy xay, máy massage, máy chơi game, loa đài, đồ gia dụng Nhật Bản…<br>
+
+✅ Thiết kế nhỏ gọn, tiện lợi: Dễ dàng lắp đặt và di chuyển, phù hợp cho gia đình, văn phòng hoặc cửa hàng.<br>
+
+✅ An toàn tuyệt đối: Được trang bị hệ thống chống sốc, chống cháy nổ, đảm bảo an toàn khi sử dụng lâu dài.     <br> 
+`
+    },
+    
+    {
+      id: 4,
+      name: "Dầu Nhớt Lạnh Chuyên Dụng R600A-R12-R22-R152-R406",
+      price: "80.000đ",
+      oldPrice: "112.000đ",
+      categoryName: "VẬT TƯ ĐIỆN LẠNH",
+      images: [
+        "assets/Images/Dau R600A.png",
+        "assets/Images/Dau R600A1.jpg"
+      ],
+      desc: `Dầu nhớt lạnh chuyên dụng (thường gọi là dầu lạnh hoặc nhớt máy nén), được sử dụng cho hệ thống làm lạnh của tủ lạnh, tủ đông hoặc điều hoà.<br><br>
+
+THÔNG TIN CHI TIẾT:<br>
+- Tên sản phẩm: Nhớt lạnh/Dầu lạnh Zhongleng.<br>
+
+- Môi chất tương thích: Phù hợp với nhiều loại gas lạnh phổ biến như R600a, R22, R12, R152 và R406. Đặc biệt, nó được thiết kế tối ưu cho máy nén sử dụng gas R600a (Isobutane).<br>
+
+- Dung tích: Thường được đóng chai khoảng 500ml đến 530ml.<br>
+
+- Công dụng: Bôi trơn, chống mài mòn cho máy nén (lốc), giúp hệ thống vận hành êm ái và ổn định nhiệt cao. Đây thường là dầu tổng hợp hoàn toàn không chứa sáp, giúp ngăn ngừa tắc nghẽn trong hệ thống lạnh ở nhiệt độ thấp.<br>
+`
+    },
+
+    {
+      id: 5,
+      name: "[3 Cuộn] Cuộn Si Quấn Ống Đồng Cho Máy Lạnh",
+      price: "80.000đ",
+      oldPrice: "112.000đ",
+      categoryName: "VẬT TƯ ĐIỆN LẠNH",
+      images: [
+        "assets/Images/Cuon Si Quan.png",
+        "assets/Images/Cuon Si Quan1.jpg"
+      ],
+      desc: `Si quấn ống đồng (hay còn gọi là simili quấn bảo ôn) là phụ kiện nhựa PVC dạng cuộn dùng để bọc ngoài cùng hệ thống ống đồng máy lạnh. Đây là bước cuối cùng trong quá trình thi công để bảo vệ lớp xốp bảo ôn và tăng độ bền cho hệ thống.
+
+<br><br>
+
+1. Tác dụng chính<br>
+
+- Bảo vệ lớp bảo ôn: Ngăn lớp xốp bên trong bị bong tróc hoặc mục nát do tác động của nắng, mưa và nhiệt độ môi trường.<br>
+
+- Chống thấm và giữ nhiệt: Ngăn nước ngưng tụ loang ra ngoài và giảm thiểu thất thoát hơi lạnh, giúp máy hoạt động hiệu quả hơn.<br>
+
+- Đảm bảo an toàn: Che chắn dây điện đi kèm ống đồng, tránh tình trạng dây bị hở gây chạm chập.<br>
+
+- Tính thẩm mỹ: Giúp bó gọn các đường ống và dây điện, tạo sự chuyên nghiệp cho công trình.<br><br>
+2. Quy cách và định mức tham khảo<br>
+
+- Quy cách: Thường được bán theo cuộn (khoảng 3 cuộn/kg).<br>
+
+- Định mức: 1 cuộn si thông thường có thể quấn được khoảng 3 mét ống đồng (tùy vào độ dày khi quấn). Nếu sử dụng 1kg (3 cuộn), - bạn có thể quấn được từ 5 đến 9 mét ống.<br>
+
+- Màu sắc: Phổ biến nhất là màu trắng, nhưng cũng có nhiều màu khác để phân loại đường ống.<br><br>
+3. Lưu ý khi lắp đặt<br>
+
+- Nên quấn si từ vị trí thấp lên cao để ngăn nước mưa len lỏi vào các khe hở của lớp quấn.<br>
+
+- Quấn với độ chồng mí đều nhau (thường chồng khoảng 1/2 chiều ngang băng quấn) để đảm bảo độ kín và chắc chắn.<br>
+
+- Với các đoạn ống lắp ngoài trời, nên quấn dày hơn để tăng khả năng chịu nhiệt và tia UV.
+
+`
+    },
+
+    {
+      id: 6,
+      name: "Bộ Ty Treo Lồng Máy Giặc TOSHIBA 58.5cm, 60cm, 62.5cm, 64cm",
+      price: "LIÊN HỆ",
+      oldPrice: "224.000đ",
+      categoryName: "VẬT TƯ ĐIỆN LẠNH",
+      images: [
+        "assets/Images/Ty Treo.png",
+        "assets/Images/Ty Treo1.jpeg"
+      ],
+      desc: `Ty treo (hay còn gọi là quang treo, ti gióng) máy giặt Toshiba là bộ phận quan trọng giúp giảm xóc, giữ cân bằng và chống rung lắc cho lồng giặt trong quá trình vận hành.<br><br>
+
+Các loại ty treo phổ biến theo khối lượng giặt<br>
+
+Tùy vào model và số ký của máy giặt, chiều dài của ty treo sẽ khác nhau. Bạn nên đo chiều dài ty cũ hoặc kiểm tra mã model máy trước khi mua để đảm bảo độ chính xác: <br>
+
+- Loại dài 58.5cm: Phù hợp cho các dòng máy từ 8kg - 9kg.<br>
+
+- Loại dài 60cm: Dùng cho máy giặt khối lượng 9kg - 10kg.<br>
+
+- Loại dài 62.5cm: Thiết kế cho các dòng máy lớn từ 10kg - 12kg.<br>
+
+- Loại dài 64.5cm: Thiết kế cho các dòng máy lớn 12kg - 14kg.<br><br>
+Dấu hiệu cần thay ty treo
+
+Máy giặt thường có biểu hiện rung lắc mạnh, kêu to hoặc va đập thùng vào vỏ máy khi chuyển sang chế độ vắt. Điều này xảy ra khi lò xo bị rão, ống nhựa bị mòn hoặc hỏng phần nhún chống rung sau khoảng 2 năm sử dụng. Khi thay thế, nên thay cả bộ 4 thanh để đảm bảo sự đồng bộ và cân bằng tốt nhất cho máy. 
+`
+    },
+
+ {
+      id: 7,
+      name: "Nhiệt Kế Điện Tử Chữ Nhật DS-1",
+      price: "60.000đ",
+      oldPrice: "84.000đ",
+      categoryName: "VẬT TƯ ĐIỆN LẠNH",
+      images: [
+        "assets/Images/NhietKe.png",
+        "assets/Images/NhietKe1.jpg"
+      ],
+      desc: `Nhiệt kế điện tử hình chữ nhật DS-1 là thiết bị đo nhiệt độ đa năng, nhỏ gọn, chuyên dụng để giám sát nhiệt độ trong tủ lạnh, tủ đông, ô tô, hoặc bể cá. Thiết bị nổi bật với khả năng đo đồng thời nhiệt độ tại hai vị trí (trong và ngoài) nhờ hệ thống đầu dò kép.
+
+<br><br>
+
+1. Thông số kỹ thuật chi tiết<br>
+
+- Dải nhiệt độ đo: Từ  đến  (tương đương  đến ).<br>
+
+- Độ chính xác: .<br>
+
+- Đầu dò (Sensor): Đi kèm dây dẫn dài khoảng 1,5m, cho phép đo nhiệt độ từ xa hoặc trong môi trường kín như tủ lạnh, bể nước.<br>
+
+- Màn hình: LCD hiển thị số trực quan, kích thước khoảng .<br>
+
+- Tính năng bổ sung:<br>
+
+- Hiển thị đồng hồ kỹ thuật số ở chế độ chờ.<br>
+
+- Nút chuyển đổi linh hoạt giữa đơn vị độ C () và độ F ().<br>
+
+- Nguồn điện: Sử dụng 1 viên pin AAA 1.5V. <br><br>
+2. Ứng dụng phổ biến<br>
+
+- Điện lạnh: Kiểm tra độ lạnh của máy điều hòa, tủ lạnh, kho lạnh.<br>
+
+- Gia đình & Văn phòng: Đo nhiệt độ phòng hoặc nhiệt độ môi trường xung quanh ô tô.<br>
+
+- Nông nghiệp & Thủy sinh: Theo dõi nhiệt độ trong nhà kính hoặc bể cá cảnh. 
+`
+    },
+
+{
+      id: 8,
+      name: "GAS Lạnh EUROPE Các Loại R600A, R32, R34. R134A, R410A. R417A/R22",
+      price: "LIÊN HỆ",
+      oldPrice: "",
+      categoryName: "VẬT TƯ ĐIỆN LẠNH",
+      images: [
+        "assets/Images/GAS LANH.png",
+        "assets/Images/GAS LANH33.png"
+      ],
+      desc: `GAS lạnh europe Các loại. Tại thị trường Việt Nam, khi nhắc đến "gas lạnh Europe", người tiêu dùng và kỹ thuật viên thường đề cập đến thương hiệu Entalpia Europe. Đây là dòng gas lạnh chất lượng cao theo tiêu chuẩn Châu Âu, được sử dụng rộng rãi cho các hệ thống điều hòa dân dụng, công nghiệp và tủ lạnh.
+
+<br><br>
+
+Dưới đây là các loại gas lạnh phổ biến nhất của dòng này:<br>
+
+- Gas R32 Entalpia Europe: Là loại gas hiện đại nhất, thay thế dần cho R410A và R22. Loại gas này có hiệu suất làm lạnh cực nhanh, tiết kiệm điện năng vượt trội và thân thiện với môi trường nhờ chỉ số gây nóng toàn cầu thấp.<br>
+
+- Gas R410A Entalpia Europe: Thường dùng cho các dòng điều hòa Inverter đời mới. Loại gas này có khả năng làm lạnh sâu và áp suất làm việc cao, đòi hỏi kỹ thuật nạp gas chính xác.<br>
+
+- Gas R134a Entalpia Europe: Phổ biến nhất trong hệ thống điều hòa ô tô, tủ lạnh gia đình, tủ mát mini và các thiết bị làm lạnh dân dụng khác.<br><br>
+
+
+- Gas R600a (Isobutane)<br>
+
+Đây là loại gas "xanh" thế hệ mới, cực kỳ phổ biến trong các thiết bị làm lạnh gia đình hiện nay.<br>
+
+Ứng dụng: Chuyên dùng cho tủ lạnh đời mới (Inverter), tủ đông, tủ mát.<br>
+
+Ưu điểm: Hiệu suất làm lạnh rất cao, giúp máy nén chạy êm và cực kỳ tiết kiệm điện. Chỉ số GWP (gây hiệu ứng nhà kính) thấp nhất trong các loại gas.<br><br>
+Lưu ý quan trọng: R600a là khí gas dễ cháy. Khi nạp gas hoặc sửa chữa, kỹ thuật viên cần có tay nghề và thiết bị chuyên dụng, tuyệt đối không dùng lửa gần khu vực nạp.<br><br>
+- Gas R417A<br>
+
+Đây là dòng gas hỗn hợp, được thiết kế như một giải pháp thay thế "tiện lợi".<br>
+
+Ứng dụng: Dùng để thay thế cho gas R22 trong các hệ thống điều hòa không khí và máy lạnh công nghiệp cũ.<br>
+
+Ưu điểm: Điểm đặc biệt nhất là bạn có thể nạp đè hoặc thay thế R22 mà không cần thay đổi dầu nhớt của máy nén (tương thích với cả dầu khoáng và dầu tổng hợp). Nó giúp kéo dài tuổi thọ cho các hệ thống máy cũ mà không cần đầu tư máy mới.<br><br>
+
+Lưu ý: Dù thay thế được R22, nhưng hiệu suất làm lạnh có thể giảm nhẹ (khoảng 5-10%) tùy thiết kế hệ thống.<br>
+`
+    },
+
+        {
+      id: 9,
+      name: "Van Khóa Gas Chống Bỏng HONGSEN R22, R410",
+      price: "103.000đ",
+      oldPrice: "150.000đ",
+      categoryName: "VẬT TƯ ĐIỆN LẠNH",
+      images: [
+        "assets/Images/Van Khoa-27.png",
+        "assets/Images/VanKhoa1.png",
+        "assets/Images/VanKhoa2.jpg",
+        "assets/Images/VanKhoa3.jpg",
+        "assets/Images/VanKhoa4.jpg",
+      ],
+      desc: `Van khóa gas chống bỏng HONGSEN R22 (thường có tay vặn màu xanh). Đây là thiết bị hỗ trợ kỹ thuật viên điện lạnh khi nạp hoặc kiểm tra gas để tránh tình trạng xì gas gây bỏng lạnh khi tháo dây sạc.
+
+<br><br>
+
+Đặc điểm và Công dụng:<br>
+
+- Chống bỏng lạnh: Van giúp kiểm soát việc mở/khóa đầu ruồi ở cổng dịch vụ, ngăn chặn gas lỏng xì ra tay khi thao tác.<br>
+
+- Khả năng tương thích: Phiên bản tay vặn màu xanh (Model HS-1222) thường dùng cho gas R22, R404A, R407C với chuẩn kết nối 1/4" - 1/4".<br>
+
+- Chất liệu: Hợp kim đồng bền bỉ, chịu được áp suất cao.<br>
+
+- Nguyên lý: Khi vặn tay van, trục sẽ đẩy đầu ruồi của cổng sạc để thông dòng gas. Khi vặn ngược lại, van sẽ đóng trước khi tháo dây, đảm bảo an toàn tuyệt đối. 
+`
+    },
+
+        {
+      id: 10,
+      name: "Cây Nạo Ống Đồng BAVIA từ 6 - 16mm",
+      price: "145.000đ",
+      oldPrice: "203.000đ",
+      categoryName: "VẬT TƯ ĐIỆN LẠNH",
+      images: [
+        "assets/Images/CayNao.png",
+        "assets/Images/CayNao2.jpg",
+        "assets/Images/CayNao1.jpg",
+      ],
+      desc: `Cây nạo bavia ống đồng là dụng cụ chuyên dụng để làm sạch các gờ sắc, vụn kim loại (bavia) ở miệng ống sau khi cắt. Việc nạo sạch bavia giúp bề mặt ống nhẵn mịn, đảm bảo khi loe ống các mối nối sẽ khít tuyệt đối, không gây rò rỉ gas trong hệ thống điện lạnh. 
+
+<br><br>
+
+Đặc điểm nổi bật:<br>
+
+- Thiết kế chuyên dụng: Lưỡi dao thường được mạ Titan hoặc làm từ thép gió (HSS) để chịu mài mòn tốt khi cạo trên vật liệu cứng như đồng, nhôm, hay thép mỏng.<br>
+
+- Khả năng làm sạch: Nạo sạch cả mặt trong và mặt ngoài miệng ống mà không làm móp hay biến dạng ống.<br>
+
+Tiện lợi: Các loại cán dao (như dòng Value VRT-301) thường có khoang chứa lưỡi dự phòng ngay trong thân bút.<br><br>
+Cách sử dụng hiệu quả:<br>
+
+1. Hướng ống xuống dưới: Khi nạo, nên hướng miệng ống xuống đất để vụn đồng rơi ra ngoài, tránh rơi ngược vào trong đường ống gas.<br>
+
+2. Xoay đều tay: Đưa lưỡi dao vào sát mép trong của ống và xoay nhẹ nhàng theo vòng tròn cho đến khi miệng ống nhẵn mịn.
+
+`
+    },
+
+        {
+      id: 11,
+      name: "Que Hàn Đồng Mỹ HARRIS Dài 45,7cm - (Bán Theo Que) ",
+      price: "17.000đ/que",
+      oldPrice: "24.000đ/que",
+      categoryName: "VẬT TƯ ĐIỆN LẠNH",
+      images: [
+        "assets/Images/QueHan.png",
+        "assets/Images/QueHan2.jpg",
+        "assets/Images/QueHan1.jpg",
+      ],
+      desc: `Que hàn đồng Harris (thường được gọi là Harris 0) là vật liệu tiêu chuẩn chuyên dùng cho ngành điện lạnh để hàn nối ống đồng điều hòa, tủ lạnh. 
+
+<br><br>
+
+Đặc điểm nổi bật của Harris 0:<br>
+
+- Thành phần: 0% Bạc, 7.1% Phốt pho, còn lại là Đồng (Cu).<br>
+
+- Khả năng tự làm sạch: Khi hàn đồng với đồng, phốt pho trong que hàn đóng vai trò như một chất trợ hàn (flux), giúp bạn hàn trực tiếp mà không cần bột hàn.<br>
+
+- Độ bền cao: Mối hàn sau khi hoàn tất có khả năng chịu lực, chịu nhiệt từ  đến  và chống ăn mòn tốt.<br>
+
+- Quy cách: Kích thước phổ biến là  mm. Trên thân mỗi que chính hãng đều dập nổi chữ "Made in U.S.A".<br><br>
+Lưu ý khi sử dụng:<br>
+
+1. Hàn đồng với sắt/thép: Cần sử dụng thêm bột hàn (flux) để đảm bảo độ bám dính.<br>
+
+2. Kỹ thuật hàn: Làm nóng ống đồng đến khi có màu "đỏ cà chua" rồi mới mồi que hàn vào để dòng chảy đều và đẹp.
+
+`
+    },
+
+  {
+      id: 12,
+      name: "Thục Máy Giặc Giảm Chấn SAMSUNG, LG, PANA,... Cửa Ngang",
+      price: "63.000đ",
+      oldPrice: "45.000đ",
+      categoryName: "VẬT TƯ ĐIỆN LẠNH",
+      images: [
+        "assets/Images/ThucMayGiac SS,LG NG.png",
+        "assets/Images/ThucMayGiac SS,LG NG1.jpg",
+        "assets/Images/ThucMayGiac SS,LG NG2.jpg",
+      ],
+      desc: `Thông tin chi tiết:<br>
+
+- Mã linh kiện: DC66-00661A.<br>
+
+- Thông số kỹ thuật: Lực nén 120N.<br>
+
+- Kích thước: Chiều dài thường khoảng 17cm đến 19cm tùy theo cách đo và model máy cụ thể.<br>
+
+- Khả năng tương thích: Ngoài Samsung, loại thụt này còn có thể dùng chung cho một số dòng máy giặt cửa ngang của các hãng khác như Aqua, Sanyo, hoặc Toshiba...,
+
+<br><br>
+
+Công dụng:<br>
+
+Linh kiện này đóng vai trò quan trọng trong việc giảm rung lắc và tiếng ồn cho lồng giặt trong quá trình hoạt động, đặc biệt là khi máy ở chế độ vắt tốc độ cao. Nếu máy giặt của bạn có hiện tượng rung lắc mạnh hoặc kêu to bất thường, có thể bộ phận này đã bị yếu hoặc hỏng và cần được thay thế.
+
+`
+},
+
+        {
+      id: 13,
+      name: "Thụt Máy Giặc Giảm Chấn TOSHIBA Cửa Ngang",
+      price: "75.000đ",
+      oldPrice: "105.000đ",
+      categoryName: "VẬT TƯ ĐIỆN LẠNH",
+      images: [
+        "assets/Images/ThucGiamChanToshiba.png",
+        "assets/Images/ThucGiamChanToshiba1.jpg",
+      ],
+      desc: `Thụt Máy Giặc Giảm Chấn TOSHIBA là linh kiện quan trọng giúp giữ cân bằng lồng giặt và triệt tiêu rung chấn khi máy vận hành.
+<br><br>
+
+Dấu hiệu cần thay thế:<br>
+
+- Bạn nên kiểm tra và thay mới thụt/nhún khi máy giặt xuất hiện các tình trạng sau:<br>
+
+- Máy rung lắc dữ dội, thậm chí tự "chạy" ra khỏi vị trí ban đầu khi vắt ở tốc độ cao.<br>
+
+- Phát ra tiếng kêu lọc cọc hoặc tiếng va đập mạnh của lồng giặt vào vỏ máy.<br>
+
+- Bộ phận giảm xóc bị mất độ đàn hồi hoặc bị chảy dầu (đối với loại thụt thủy lực).<br><br>
+
+Kích thước: Chiều dài 19 cm , Đường kính lỗ 11 mm<br>
+
+Phù hợp lắp đặt thay thế cho máy giặt Toshiba, Midea nhiều model và 1 số hãng thông dụng khác như Samsung, LG, Sanyo, Midea<br>
+
+- Hàng mới, chính hãng 100%.<br>
+
+- Hình ảnh mô tả là hình chụp sản phẩm tại shop.<br>
+
+- Chất liệu: Nhựa kỹ thuật<br>
+
+- Linh kiện thay thế cho máy giặt<br>
+
+Nhún máy giặt hay còn gọi là thụt máy giặt, giảm xóc máy giặt là: linh kiện có thể nói là khá quan trọng trong mỗi chiếc máy giặt, nhún, thụt, giảm xóc máy giặt có tác dụng giữ cân bằng lồng giặt và chống rung trong quá trình máy vận hành. Bộ phận giảm xóc này có tác dụng cân bằng trọng tải kể cả khi máy chạy không tải.<br><br>
+Nếu trong thời gian dài sử dụng máy, mà bạn cảm thấy bộ phận giảm sóc hết sự đàn hồi khi máy đang vắt ở chế độ cao máy giặt có hiện tượng như rung chạy ra khỏi vị trí, bị kêu. Để khắc phục tình trạng trên bạn nên thay thế nhún, thụt, giảm xóc mới cho máy.
+`
+    },
+
+        {
+      id: 14,
+      name: "Thục Máy Giặc Giảm Chấn Electrolux (7-9Kg) Cửa Ngang",
+      price: "75.000đ",
+      oldPrice: "105.000đ",
+      categoryName: "VẬT TƯ ĐIỆN LẠNH",
+      images: [
+        "assets/Images/ThucGiamChanElec.png",
+        "assets/Images/ThucGiamChanElec1.jpg",
+      ],
+      desc: `Thục Máy Giặc Giảm Chấn Electrolux. <br><br>
+
+Thông số kỹ thuật của thụt (phuộc nhún) máy giặt Electrolux cửa ngang thường khác nhau tùy theo đời máy và khối lượng giặt (7kg, 8kg, 9kg...). Dưới đây là các thông số phổ biến nhất:
+<br><br>
+- Chiều dài:<br>
+
+Loại ngắn: Khoảng 19cm (phổ biến cho các model đời cũ hoặc dòng JN-85004-B).<br>
+
+Loại dài: Khoảng 21cm (dành cho các model đời mới hơn, máy từ 7kg - 11kg).<br><br>
+- Đường kính lỗ chốt: Thường là 11mm hoặc 13mm để khớp với chốt định vị trên khung máy và lồng giặt.<br>
+
+- Lực nén (Độ cứng): Thường dao động từ 60N đến 100N (Newton). Thông số này quyết định khả năng hấp thụ rung chấn; nếu thay sai lực nén, máy có thể vẫn bị rung lắc.<br>
+
+- Chất liệu: Thân thụt thường làm bằng nhựa kỹ thuật cao cấp hoặc kim loại, ty bên trong bằng thép không gỉ.<br>
+
+- Số lượng: Một máy giặt Electrolux thường sử dụng bộ 2 chiếc hoặc 3 chiếc tùy theo thiết kế lồng giặt.<br><br>
+Khi nào cần thay thụt máy giặt?<br>
+
+- Bạn nên kiểm tra và thay thế bộ giảm xóc nếu máy giặt xuất hiện các dấu hiệu sau:<br>
+
+- Rung lắc mạnh: Máy bị "nhảy" hoặc di chuyển khỏi vị trí ban đầu khi vắt.<br>
+
+- Tiếng ồn lớn: Có tiếng va đập "cộp cộp" của lồng giặt vào vỏ máy.<br>
+
+- Thụt bị hỏng cơ học: Khi kiểm tra trực tiếp, thụt có dấu hiệu bị rỗng, mất độ đàn hồi hoặc chảy dầu.
+
+`
+    },
+
+        {
+      id: 15,
+      name: "Thang Nhôm Rút Lồng Đa Năng Ameca AMC-MB44",
+      price: "2.600.000đ",
+      oldPrice: "3.000.000đ",
+      categoryName: "VẬT TƯ ĐIỆN LẠNH",
+      images: [
+        "assets/Images/ThangAmeca.png",
+        "assets/Images/ThangAmeca1.jpg",
+        "assets/Images/ThangAmeca2.jpg",
+      ],
+      desc: `THÔNG SỐ KỸ THUẬT:<br>
+
+- Số bậc: 4 bậc <br>
+
+- Khoảng cách giữa các bậc : 24cm<br>
+
+- Chiều cao tối đa chữ A : 1m93<br>
+
+- Chiều cao chữ I : 3m96<br>
+
+- Chiều cao xếp gọn : 1m22<br>
+
+- Trọng lượng : 11.2 kg<br>
+
+- Tải Trọng : 150kg    <br>                 
+
+- Nhãn hiệu: AMECA<br>
+
+- Nước sản xuất: Việt Nam<br>
+
+- Bảo hành: 18 tháng
+<br><br>
+Thang nhôm rút lồng đa năng Ameca AMC-MB44 là lựa chọn lý tưởng cho những ai cần một chiếc thang vừa linh hoạt, vừa an toàn và bền bỉ. Sản phẩm phù hợp cho cả công việc gia đình và môi trường làm việc chuyên nghiệp. Bài viết này sẽ giới thiệu chi tiết ưu điểm, ứng dụng, hướng dẫn sử dụng và bảo quản thang AMC-MB44.
+<br><br>
+Ưu điểm nổi bật của thang rút lồng đa năng Ameca AMC-MB44
+
+- Thang nhôm rút lồng đa năng Ameca AMC-MB44 sở hữu nhiều tính năng nổi bật, giúp người dùng thực hiện công việc trên cao dễ dàng và an toàn.
+<br><br>
+Khóa tự động an toàn, chắc chắn khi leo lên cao
+
+- Cơ chế khóa tự động giúp các bậc thang cố định chắc chắn, giảm tối đa nguy cơ trượt hoặc lắc khi leo. Đây là ưu điểm quan trọng, đặc biệt khi bạn cần thao tác với dụng cụ hoặc thiết bị trên cao. Người dùng có thể yên tâm khi làm việc mà không lo sự cố.
+<br><br>
+Nhẹ, dễ mang và di chuyển
+
+- Thang được làm từ nhôm hợp kim cao cấp, trọng lượng nhẹ, giúp việc di chuyển, dựng và thu gọn thang trở nên nhanh chóng. Bạn có thể dễ dàng mang thang từ phòng này sang phòng khác, hoặc lên tầng trên mà không tốn nhiều sức lực. 
+
+Việc vận hành êm ái cũng giúp thang AMC-MB44 trở thành lựa chọn lý tưởng cho môi trường cần sự tĩnh lặng.
+<br><br>
+Chất liệu nhôm hợp kim bền bỉ, tuổi thọ dài
+
+- Nhôm hợp kim không chỉ nhẹ mà còn chống gỉ sét, chịu lực tốt. Ameca AMC-MB44 duy trì tuổi thọ cao ngay cả khi sử dụng liên tục, đồng thời giảm thiểu hư hỏng hay hao mòn.
+<br><br>
+Ứng dụng nổi bật trong gia đình và công việc
+
+- Thang nhôm rút lồng đa năng Ameca AMC-MB44 là giải pháp đa năng, phù hợp với nhiều môi trường và nhu cầu khác nhau.
+<br><br>
+Vệ sinh, sửa chữa mái nhà và lắp đặt thiết bị trên cao
+
+- Thang hỗ trợ các công việc bảo trì, vệ sinh mái, lắp đặt quạt trần, đèn và thiết bị khác một cách an toàn. Chiều cao tối đa khi kéo thẳng giúp thao tác dễ dàng mà vẫn đảm bảo ổn định.
+
+
+`
+    },
+
+  ];
+
+  // ===== GET ID =====
+  const id = new URLSearchParams(window.location.search).get("id");
+  const product = products.find(p => p.id == id);
+if (!product) {
+  alert("Không tìm thấy sản phẩm!");
+  window.location.href = "index.html";
+}
+
+  // ===== RENDER =====
+  document.getElementById("productName").innerText = product.name;
+  document.getElementById("productPrice").innerText = product.price;
+  document.getElementById("productOldPrice").innerText = product.oldPrice;
+  document.getElementById("mainImage").src = product.images[0];
+  document.getElementById("specContent").innerHTML = product.desc;
+
+  document.getElementById("breadcrumbName").innerText = product.name;
+  document.getElementById("breadcrumbCategory").innerText = product.categoryName || "Danh mục";
+
+  // ===== THUMBNAIL =====
+  const thumbList = document.getElementById("thumbnailList");
+
+  product.images.forEach((img, index) => {
+    const el = document.createElement("img");
+    el.src = img;
+
+    if(index === 0) el.classList.add("active");
+
+    el.onclick = function(){
+        currentIndex = index;
+        updateImage();
+
+      document.querySelectorAll("#thumbnailList img")
+        .forEach(i => i.classList.remove("active"));
+
+      el.classList.add("active");
+    };
+
+    thumbList.appendChild(el);
+  });
+
+  // ===== XEM THÊM =====
+  const btn = document.getElementById("toggleBtn");
+  const content = document.getElementById("specContent");
+
+  btn.onclick = function(){
+    content.classList.toggle("open");
+    btn.innerText = content.classList.contains("open")
+      ? "Thu gọn ▲"
+      : "Xem thêm ▼";
+  };
+
+  // ===== RELATED =====
+  const relatedBox = document.getElementById("relatedList");
+
+  products
+    .filter(p => p.id !== product.id)
+    .forEach(item => {
+      const div = document.createElement("div");
+      div.className = "product-card";
+
+      div.innerHTML = `
+        <a href="product.html?id=${item.id}">
+          <img src="${item.images[0]}">
+          <h3>${item.name}</h3>
+          <p>${item.price}</p>
+        </a>
+      `;
+
+      relatedBox.appendChild(div);
+    });
+
+  // ===== QUANTITY =====
+  const minus = document.querySelector(".minus");
+  const plus = document.querySelector(".plus");
+  const input = document.querySelector(".qty-input");
+
+  plus.onclick = () => input.value = parseInt(input.value) + 1;
+
+  minus.onclick = () => {
+    if(parseInt(input.value) > 1){
+      input.value = parseInt(input.value) - 1;
+    }
+  };
+let currentIndex = 0;
+
+const mainImage = document.getElementById("mainImage");
+const nextBtn = document.querySelector(".main-btn.next");
+const prevBtn = document.querySelector(".main-btn.prev");
+
+function updateImage() {
+  mainImage.src = product.images[currentIndex];
+  mainImage.style.opacity = 0;
+  mainImage.style.transform = "scale(0.95)";
+    setTimeout(() => {
+    mainImage.src = product.images[currentIndex];
+    mainImage.style.opacity = 1;
+    mainImage.style.transform = "scale(1)";
+  }, 150);
+    // active thumb
+  document.querySelectorAll("#thumbnailList img")
+    .forEach((img, i) => {
+      img.classList.toggle("active", i === currentIndex);
+    });
+
+  document.querySelectorAll("#thumbnailList img")
+    .forEach((img, i) => {
+      img.classList.toggle("active", i === currentIndex);
+    });
+}
+
+nextBtn.onclick = () => {
+  currentIndex++;
+  if (currentIndex >= product.images.length) currentIndex = 0;
+  updateImage();
+};
+
+prevBtn.onclick = () => {
+  currentIndex--;
+  if (currentIndex < 0) currentIndex = product.images.length - 1;
+  updateImage();
+};
+});
+
+</script>
+  <!-- Mobile Menu -->
+<!-- FLOATING MENU MOBILE -->
+<!-- FLOATING MENU MOBILE -->
+<div class="fab-container">
+  <div class="fab-button" id="fabBtn">☰</div>
+
+  <div class="fab-item item4">
+  <img src="https://logos-world.net/wp-content/uploads/2023/03/Zalo-Logo.png" width="100">
+</div>
+
+<div class="fab-item item3">
+  <img src="https://static.vecteezy.com/system/resources/previews/018/930/698/original/facebook-logo-facebook-icon-transparent-free-png.png" width="100">
+</div>
+
+<div class="fab-item item2">
+  <img src="https://freelogopng.com/images/all_img/1656180674shopee-logo-transparent.png" width="70">
+</div>
+<div class="fab-item item1">
+  <img src="https://freepnglogo.com/images/all_img/1714299248tiktok-shop-logo-png-transparent.png" width="70">
+</div>
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<script>
+const fabBtn = document.getElementById("fabBtn");
+const fabContainer = document.querySelector(".fab-container");
+const overlay = document.getElementById("overlay");
+
+fabBtn.onclick = () => {
+  fabContainer.classList.toggle("open");
+  overlay.classList.toggle("show");
+
+  fabBtn.innerText = fabContainer.classList.contains("open") ? "✕" : "☰";
+};
+
+overlay.onclick = () => {
+  fabContainer.classList.remove("open");
+  overlay.classList.remove("show");
+  fabBtn.innerText = "☰";
+};
+</script>
+
+<div class="overlay" id="overlay"></div>
+  <footer class="footer">
+  <div class="container footer-top">
+
+    <div class="footer-col">
+      <h4>Tổng đài hỗ trợ</h4>
+      <p>Gọi mua: <b>0366.048.028</b></p>
+      <p>Khiếu nại: <b>0366.048.028</b></p>
+      <p>Bảo hành: <b>0366.048.028</b></p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Về công ty</h4>
+      <a href="#">Giới thiệu</a>
+      <a href="#">Tuyển dụng</a>
+      <a href="#">Liên hệ</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Thông tin khác</h4>
+      <a href="#">Chính sách bảo hành</a>
+      <a href="#">Chính sách đổi trả</a>
+      <a href="#">Hướng dẫn mua hàng</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Kết nối</h4>
+      <div class="socials">
+        <span>Facebook</span>
+        <span>Shopee</span>
+        <span>Zalo</span>
+      </div>
+    </div>
+
+  </div>
+  <!-- Mobile Menu -->
+<div class="overlay" id="overlay"></div>
+
+  <div class="footer-bottom">
+    <p>© 2026 Vật Tư - Điện Lạnh Hoàng Sang</p>
+    <p>Địa chỉ: Đường Bình Giả, Phường Tân Thành, TP. Hồ Chính Minh - Việt Nam</p>
+  </div>
+</footer>
+
+
+<script>
+const fabBtn = document.getElementById("fabBtn");
+const fabMenu = document.getElementById("fabMenu");
+const overlay = document.getElementById("overlay");
+
+fabBtn.onclick = () => {
+  fabMenu.classList.toggle("open");
+  overlay.classList.toggle("show");
+
+  fabBtn.innerText = fabMenu.classList.contains("open") ? "✕" : "☰";
+};
+
+overlay.onclick = () => {
+  fabMenu.classList.remove("open");
+  overlay.classList.remove("show");
+  fabBtn.innerText = "☰";
+};
+</script>
+
+<script>
+const list = document.getElementById("thumbnailList");
+const btnLeft = document.querySelector(".thumb-btn.left");
+const btnRight = document.querySelector(".thumb-btn.right");
+
+if (list && btnLeft && btnRight) {
+  btnRight.onclick = () => list.scrollLeft += 150;
+  btnLeft.onclick = () => list.scrollLeft -= 150;
+};
+</script>
+
+</body>
+</html>
